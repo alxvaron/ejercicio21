@@ -2,14 +2,16 @@ from random import shuffle
 import sys
 
 def maso():
-    return [2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11]
+    return [2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,'J','J','J','J','Q','Q','Q','Q','K','K','K','K','A','A','A','A']
 
 #suma las manos de cada jugador
-def suma(maso):
-    if maso==[]:
+def suma(manoJ):
+    if manoJ==[]:
         return 0
     else:
-        return maso[0] + suma(maso[1:])
+        comprobarLetra (manoJ)
+        return manoJ[0] + suma(manoJ[1:])
+
 
  # def si es 1 o 11 mostrar A
 def mostrarLetra (n):
@@ -17,7 +19,25 @@ def mostrarLetra (n):
         return 'A'
     else: 
         return str(n)
-    
+
+def comprobarLetra (mano):
+    if('J' in mano):
+        mano.remove('J')
+        mano.append(10)
+        comprobarLetra (mano)
+    elif('Q' in mano):
+        mano.remove('Q')
+        mano.append(10)
+        comprobarLetra (mano)
+    elif('K' in mano):
+        mano.remove('K')
+        mano.append(10)
+        comprobarLetra (mano)
+    elif('A' in mano):
+        mano.remove('A')
+        mano.append(11)
+        comprobarLetra (mano)
+    return (mano)    
     
 # def listas vacias manoJugador y manoCasa
 def manoJugador():
@@ -46,6 +66,7 @@ def leer():
 # se sirve carta y la elimina del maso
 def unaCarta(mano, baraja, jugador):
     mano.append(baraja.pop(0))
+    comprobarAs (mano)
     print ("")
     print ("Mano",jugador,": ",mostrarLetra(mano))
     print("Suma: ",suma(mano))
@@ -61,8 +82,18 @@ def ganador(manoJ, manoC):
         else:
             print ("Jugador gana")
 
+#se comprueba as
+def comprobarAs (mano):
+    if(11 in mano):
+        if( suma(mano) > 21):
+            mano.remove(11)
+            mano.append(1)
+            return comprobarAs(mano)
+           
+
 # evalua si se paso de 21
 def evaluar(mano, baraja):
+    comprobarAs (mano)
     if suma(mano) < 21:
         return 1
     elif suma(mano) > 21:
@@ -86,7 +117,23 @@ def pedirCarta(mano, baraja, jugador):
     else:    
         print (f"{jugador} se planto en: {suma(mano)}")
         
+def pedirCartaCasa(mano, baraja, jugador):
+    
+    while suma(mano) < 20:
+        unaCarta(mano,baraja, jugador)
+        evaluar(mano, baraja)
+             
         
+    if suma(mano) == 21:
+        print (f"Gano {jugador}")
+        return sys.exit(0)
+    elif suma(mano) > 21:
+        print ("")
+        print(f"Total {jugador}: {suma(mano)} - Perdio {jugador}")
+        return sys.exit(0)
+    else:    
+        print (f"{jugador} se planto en: {suma(mano)}")
+              
         
 #main
 def repartir(manoCasa, manoJugador, baraja):    
@@ -98,9 +145,11 @@ def repartir(manoCasa, manoJugador, baraja):
     manoJugador.append(baraja.pop(0))
     
     print ("Mano Casa: ",mostrarLetra(manoCasa))
+    comprobarAs (manoCasa)
     print ('Suma: ',suma(manoCasa))
     print ("")
     print ("Mano Jugador: ",mostrarLetra(manoJugador))
+    comprobarAs (manoJugador)
     print("Suma: ",suma(manoJugador))
     print ("")
 
@@ -108,14 +157,9 @@ def repartir(manoCasa, manoJugador, baraja):
     pedirCarta(manoJugador, baraja, "jugador")
     print ("")
     print("********* TURNO CASA **********")
-    pedirCarta(manoCasa, baraja, "casa")
+    pedirCartaCasa(manoCasa, baraja, "casa")
     ganador(manoJugador, manoCasa)
 
 menu()
 print("Se sirven cartas, buena suerte!!! ")
 repartir(manoCasa(),manoJugador(),maso())
-
-
-
-        
-    
