@@ -89,7 +89,7 @@ def comprobarAs (mano):
         if( suma(mano) > 21):
             mano.remove(11)
             mano.append(1)
-            print ('Suma: ',suma(mano))
+            print ('Suma nueva: ',suma(mano))
             return comprobarAs(mano)
            
 
@@ -116,9 +116,10 @@ def pedirCarta(mano, baraja, jugador):
     elif suma(mano) > 21:
         print ("")
         print(f"Total {jugador}: {suma(mano)} - Perdio {jugador}")
-        return sys.exit(0)
+        reiniciar()
     else:    
         print (f"{jugador} se planto en: {suma(mano)}")
+        evaluar(mano, baraja)
         
 def pedirCartaCasa(mano, baraja, jugador):
     
@@ -129,15 +130,30 @@ def pedirCartaCasa(mano, baraja, jugador):
         
     if suma(mano) == 21:
         print (f"Gano {jugador}")
-        return sys.exit(0)
+        return reiniciar()
     elif suma(mano) > 21:
         print ("")
-        print(f"Total {jugador}: {suma(mano)} - Perdio {jugador}")
-        return sys.exit(0)
+        print(f"Total {jugador}: {suma(mano)}Perdio {jugador}")
+        return reiniciar()
     else:    
         print (f"{jugador} se planto en: {suma(mano)}")
-              
-        
+          
+
+# leer reiniciar
+def leerReiniciar ():
+    print ("")
+    return int (input ("presione 1 para jugar de nuevo, otro caracter para salir "))
+
+# reiniciar
+def reiniciar ():
+    
+    if(leerReiniciar()==1):
+             menu()
+             repartir(manoCasa(),manoJugador(),maso())
+             reiniciar()
+    else:
+        print("Gracias por jugar")
+
 #main
 def repartir(manoCasa, manoJugador, baraja):    
     shuffle(baraja)
@@ -163,6 +179,9 @@ def repartir(manoCasa, manoJugador, baraja):
     pedirCartaCasa(manoCasa, baraja, "casa")
     ganador(manoJugador, manoCasa)
 
+menu()
+print("Se sirven cartas, buena suerte!!! ")
+repartir(manoCasa(),manoJugador(),maso())
 menu()
 print("Se sirven cartas, buena suerte!!! ")
 repartir(manoCasa(),manoJugador(),maso())
