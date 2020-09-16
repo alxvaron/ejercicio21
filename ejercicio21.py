@@ -77,14 +77,14 @@ def pedirCarta(mano, baraja, jugador):
              
         
     if suma(mano) == 21:
-        print ("Gano", jugador)
+        print (f"Gano {jugador}")
         return sys.exit(0)
     elif suma(mano) > 21:
         print ("")
-        print(suma(mano), "Perdio", jugador)
+        print(f"Total {jugador}: {suma(mano)} - Perdio {jugador}")
         return sys.exit(0)
     else:    
-        print (jugador, "se planto en: ", suma(mano))
+        print (f"{jugador} se planto en: {suma(mano)}")
         
         
         
