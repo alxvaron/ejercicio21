@@ -69,6 +69,7 @@ def unaCarta(mano, baraja, jugador):
     comprobarAs (mano)
     print ("")
     print ("Mano",jugador,": ",mostrarLetra(mano))
+    comprobarAs (mano)
     print("Suma: ",suma(mano))
 
 # esta funcion evalua el ganador si la casa o el jugador
@@ -88,6 +89,7 @@ def comprobarAs (mano):
         if( suma(mano) > 21):
             mano.remove(11)
             mano.append(1)
+            print ('Suma: ',suma(mano))
             return comprobarAs(mano)
            
 
@@ -108,8 +110,9 @@ def pedirCarta(mano, baraja, jugador):
              
         
     if suma(mano) == 21:
-        print (f"Gano {jugador}")
-        return sys.exit(0)
+        print (f"Lograste 21, esperemos que no te igualen")
+        #print (f"Gano {jugador}")
+        #return sys.exit(0)
     elif suma(mano) > 21:
         print ("")
         print(f"Total {jugador}: {suma(mano)} - Perdio {jugador}")
